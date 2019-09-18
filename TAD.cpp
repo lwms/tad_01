@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "TAD.hpp"
 #define LEN 100
 
@@ -14,9 +15,9 @@ int add_item(void * val) {
                 fail = 2; // falha ao criar elemento
             }
             tmp->index = qtd;
-            tmp->value = val;
-            tmp->timestamp = "2019-09-18 08:00:01";
-            cofo[qtd++] = &tmp;
+            tmp->value =  &val;
+            strcpy (tmp->timestamp, "2019-09-18 08:00:01");
+            cofo[qtd++] = *tmp;
         } else {
             fail = 3; // armazenamento cheio | sem espaço
         }
