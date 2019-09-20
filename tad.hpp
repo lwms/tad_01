@@ -3,8 +3,9 @@
 
 typedef struct _tad {
     int id;
-    void * value;
-    char timestamp[20];
+    int max_size;
+    int current_size;
+    void ** value;
 } tad;
 
 // adiciona um item
@@ -13,6 +14,8 @@ int add_item(void * val);
 void * get_item(void * val, int field, int (*ptf)(int , void *, void *));
 // remove um item
 void * del_item(int index);
+// impime item
+void print_item(void *);
 // imprimir itens
 void print_all();
 // remove todos

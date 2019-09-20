@@ -2,6 +2,7 @@
 #define CADASTRO_HPP_INCLUDED
 
 typedef struct _cad {
+    int id;
     char doc[20];
     char name[251];
     char nickname[151];
@@ -12,6 +13,7 @@ typedef struct _cad {
     char cep[11];
     int age;
     float height;
+    char timestamp[20];
 } cad;
 
 /**

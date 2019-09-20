@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "utils.hpp"
 #include "tad.hpp"
 #include "cadastro.hpp"
@@ -9,7 +10,7 @@ int main()
 {
     int exit_loop =  1;
     int option = 0;
-
+    char str[1024];
     cad * new_item = NULL;
 
     for (;exit_loop;) {
@@ -30,6 +31,7 @@ int main()
                 new_item = (cad *) malloc(sizeof(cad));
                 if (new_item != NULL) {
 
+                    srand(100);
                     scanf("%s", new_item->doc);
                     scanf("%s", new_item->name);
                     scanf("%s", new_item->nickname);
@@ -40,6 +42,8 @@ int main()
                     scanf("%s", new_item->neighborhood);
                     scanf("%s", new_item->city);
                     scanf("%s", new_item->cep);
+                    strcpy(new_item->timestamp, get_timestamp());
+                    new_item->id = rand();
 
                     add_item((void *)new_item);
                 }
@@ -52,7 +56,8 @@ int main()
                 break;
             }
             case 3:{ // Buscar
-                puts(get_timestamp());
+                scanf("%s", str);
+                print_item(get_item((void *)str, 1, compare_field));
                 option = 0;
                 break;
             }
@@ -75,7 +80,7 @@ int main()
                 printf("Erro: Opção inválida !!!");
             }
         }
-
+        new_item = NULL;
         clear_keyboard_buffer();
         getchar();
 

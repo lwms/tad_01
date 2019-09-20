@@ -6,25 +6,33 @@
 #include "cadastro.hpp"
 #define LEN 100
 
-tad cofo[LEN];
-tad * tmp;
+static tad * cofo = NULL;
 static int fail = 0;
-static int qtd = 0;
 
 int add_item(void * val) {
     if (val != NULL) {
-        if (qtd < LEN) {
-            tmp = (tad *) malloc(sizeof(tad));
-            if (tmp == NULL) {
-                fail = 2; // falha ao criar elemento
+        if(cofo == NULL) {
+            cofo = (tad *) malloc(sizeof(tad));
+            if(cofo == NULL) {
+                fail = 2;
+            } else {
+                srand(100);
+                cofo->id = rand();
+                cofo->max_size = LEN;
+                cofo->current_size = 0;
+                cofo->value = (void **)malloc(sizeof(void *));
+                if(cofo->value == NULL) {
+                    fail = 3; // sem espaço para guardar os dados
+                    free(cofo);
+                    cofo = NULL;
+                } else {
+                    cofo->value[cofo->current_size++] = val;
+                }
             }
-            tmp->id = qtd;
-            tmp->value =  val;
-            strcpy (tmp->timestamp, get_timestamp());
-            cofo[qtd] = *(tmp);
-            qtd++;
+        } else if (cofo->current_size < LEN) {
+            cofo->value[cofo->current_size++] = val;
         } else {
-            fail = 3; // armazenamento cheio | sem espaço
+            fail = 5; // armazenamento cheio | sem espaço
         }
     } else {
         fail = 1; // sem dados à armazenar
@@ -33,10 +41,10 @@ int add_item(void * val) {
 }
 
 void * get_item(void * val, int field, int (*ptf)(int , void *, void *)) {
-    if (val != NULL && ptf != NULL) {
-        for (int i = 0; i < qtd; i++) {
-            if (ptf(field, val, cofo[i].value) == 0) {
-                return cofo[i].value;
+    if (val != NULL && ptf != NULL && cofo !=  NULL) {
+        for (int i = 0; i < cofo->current_size; i++) {
+            if (ptf(field, val, cofo->value[i]) == 0) {
+                return cofo->value[i];
             }
         }
     }
@@ -44,26 +52,35 @@ void * get_item(void * val, int field, int (*ptf)(int , void *, void *)) {
 }
 
 void * del_item(int index) {
-    if (qtd > 0 && index >= 0 && index < qtd) {
-        void * temp = cofo[index].value;
-        for (int i = index; i < qtd - 1; i++) {
-            cofo[i] = cofo[i + 1];
-            //free(cofo[i + 1]);
+    if (cofo != NULL && index >= 0 && index < cofo->current_size) {
+        void * temp = cofo->value[index];
+        for (int i = index; i < cofo->current_size - 1; i++) {
+            cofo->value[i] = cofo->value[i + 1];
+            cofo->value[i + 1] = NULL;
         }
-        qtd--;
+        cofo->current_size--;
         return temp;
     }
     return NULL;
 }
 
 
+void print_item(void * val) {
+    if(val != NULL) {
+        print_data(val);
+    }
+}
+
 void print_all() {
-    if(qtd > 0) {
+    if(cofo != NULL && cofo->current_size > 0) {
         puts("listing:");
-        for (int i = 0; i < qtd; i++) {
-            printf("\tId: %i\n", cofo[i].id);
-            printf("\tCreated: %s\n", cofo[i].timestamp);
-            print_data(cofo[i].value);
+        printf("[\n");
+        printf("\tTAD Id: %i\n", cofo->id);
+        printf("\tMax size: %i\n", cofo->max_size);
+        printf("\tCurrent size: %i\n", cofo->current_size);
+        for (int i = 0; i < cofo->current_size; i++) {
+            print_data(cofo->value[i]);
         }
+        printf("]\n");
     }
 }
