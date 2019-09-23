@@ -11,6 +11,7 @@ int main()
     int exit_loop =  1;
     int option = 0;
     char str[1024];
+    int idx;
     cad * new_item = NULL;
 
     for (;exit_loop;) {
@@ -62,12 +63,15 @@ int main()
                 break;
             }
             case 4:{ // Deletar
-                puts(get_timestamp());
+                scanf("%i", &idx);
+                void * aux = del_item(idx);
+                print_item(aux);
+                clear_item(aux);
                 option = 0;
                 break;
             }
             case 5:{ // Limpar
-                puts(get_timestamp());
+                clear_all();
                 option = 0;
                 break;
             }

@@ -27,7 +27,7 @@ void print_data(void * val) {
         printf("\t\tName: %s\n",aux->name);
         printf("\t\tNickname: %s\n",aux->nickname);
         printf("\t\tAge: %d\n", aux->age);
-        printf("\t\tHeight: %f\n", aux->height);
+        printf("\t\tHeight: %.2f\n", aux->height);
         printf("\t\tPhone: %s\n", aux->phone);
         printf("\t\tStreet: %s\n",aux->street);
         printf("\t\tNeighborhood: %s\n",aux->neighborhood);

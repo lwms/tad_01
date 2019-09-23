@@ -64,10 +64,15 @@ void * del_item(int index) {
     return NULL;
 }
 
-
 void print_item(void * val) {
-    if(val != NULL) {
+    if(cofo != NULL && val != NULL) {
+        puts("Data item:");
+        printf("[\n");
+        printf("\tTAD Id: %i\n", cofo->id);
+        printf("\tMax size: %i\n", cofo->max_size);
+        printf("\tCurrent size: %i\n", cofo->current_size);
         print_data(val);
+        printf("]\n");
     }
 }
 
@@ -84,3 +89,22 @@ void print_all() {
         printf("]\n");
     }
 }
+
+void clear_item(void * val){
+    if(val != NULL) {
+        free(val);
+    }
+}
+
+void clear_all() {
+    if(cofo != NULL) {
+        if(cofo->current_size > 0) {
+            for(int i = 0; i < cofo->current_size; i++) {
+                clear_item(cofo->value[i]);
+            }
+        }
+        free(cofo);
+        cofo = NULL;
+    }
+}
+

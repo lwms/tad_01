@@ -12,13 +12,15 @@ typedef struct _tad {
 int add_item(void * val);
 // busca um item
 void * get_item(void * val, int field, int (*ptf)(int , void *, void *));
-// remove um item
+// retira um item do cofo
 void * del_item(int index);
 // impime item
 void print_item(void *);
 // imprimir itens
 void print_all();
-// remove todos
+// libera memória de um item
+void clear_item(void * val);
+// libera memória de todos
 void clear_all();
 
 #endif // TAD_HPP_INCLUDED
